@@ -245,6 +245,16 @@ In addition to that, I want to signify my very honest appreciation to VGU for pr
 %---------------------------------------------------------------------------------
 \pagenumbering{arabic}
 \chapter{Introduction}
+The high tech environment of our present-day proposes a lot of alternatives for teachers and students. It can be mind-boggling to determine where to start since there are too many options. What could be the motivation for a beneficial advance in the classroom? What could benefit the students the most? The first thought that went through my mind was, classroom interaction between lecturers and students.\par 
+Besides, nowadays, there are online courses in which the students can take part at their homes, so to put on a competition, the traditional universities should be able to step up their game. \textbf{Interaction} is the key. They should make interaction in the classroom become as seamless as possible. The other disadvantages of the physical classrooms are that, sometimes classrooms are big, so the teachers cannot hear the calls for help from students. And, when a student is allowed to ask a question, they often have to speak very loud for the whole class to listen. The students sitting in front of the asking student will also have to turn back to look at the asking student. \par 
+For those reasons, I carried out my project, which is called the Web-Based Tool for Supporting Student-Lecturer Classroom Interaction. The app contains my solutions for the abovementioned problems, such as:
+\begin{itemize}
+    \item A class map for the teacher to know where a particular student is sitting, and the basic information about that student. This class map can also be used to see the results of students on a particular quiz.
+    \item Teachers can create quizzes, and students can do quizzes directly on the app. While the students are doing the quiz, the teacher can have a live update of their results through the class map.
+    \item There is a function for a student to call for the teacher's attention just by clicking on one button. The teacher can close the call or accept it. If the teacher accept it, a video call window will be opened. The student's voice will then be heard through the teacher's speaker, and their image will be seen on the projector.
+\end{itemize}
+To make the thesis easy to follow, I divided the main content of it into two parts: one is the user manual, specifically written for end users so that anyone can use it without knowing about the tech behind; and one is the developer manual, which is designed for programming specialists to read, modify or develop the application. 
+
 \chapter{User manual}
 \section{Login screen}
 \begin{figure}[H]
@@ -476,6 +486,28 @@ To construct the signature, you must sign the encoded header and payload with a 
 In my application, when the user inputs the right username and password to login, they will earn a JSON Web Token. At whatever time the user desires to use a function, the user agent should send the JWT in the Authorization header employing the Bearer schema. The header should resemble this:\par
 Authorization: Bearer (token)\par
 The server will inspect for a genuine JWT in the Authorization header, and if it exists, the user will be permitted use the functions based on their role, which is stated in the payload of the JWT.\cite{jwt}
+\subsection{REpresentational State Transfer (REST)}
+It is a structural fashion for determining principles between computer systems on the Internet, facilitating the data transmission between systems. The typical features of systems that follow REST, frequently declared as RESTful systems, are that they are stateless, and they set apart the concerns of client and server.
+\subsubsection{Division of client and server}
+In REST, the client and the server can independently put their tasks into action without each being aware of the other. The developer can alter the code on the client side on any occasion without influencing the working of the server, and vice versa.\par 
+Considering each side realizes what form of message to transmit to each other, the modularity and detachment can be maintained. The matters of the UI are detached from the matters of the data storage, which means that the adaptability of the interface traversing the platforms and the scalability will be better, because the elements of the server are reduced. Furthermore, this permits both the client and the server to be developed separately.
+\subsubsection{Statelessness}
+This means that, it is not required for the server to recognize the state the client is in, and the other way around also applies. Thus, the server and the client are both able to comprehend any message that they are in receipt of, even without perceiving prior messages. This is accomplished by way of using \textit{resources}, instead of \textit{commands}. Resources define literally anything that the user wants to keep or transmit to other services. REST systems do not have to depend on the employment of interfaces, on account of their communication method; it is through standard actions on resources. \par 
+These constraints assist RESTful apps in reaching reliability, fast performance, and scalability, as elements that can be controlled, brought up to date, and reiterated without disturbing the system in the course of its operation.
+\subsubsection{Information exchanging between client and server}
+In REST, it is necessary for a client to make a request to the server to get back or alter data on the server. A request is mainly made up of:
+\begin{itemize}
+    \item an HTTP verb, which decides what type of action to carry out. In REST, to connect to the resources, we apply 4  elementary HTTP verbs:
+    \begin{enumerate}
+        \item GET - get a particular resource, or an array of resources
+        \item POST - construct a new resource
+        \item PUT - amend a particular resource
+        \item DELETE - delete a particular resource
+    \end{enumerate}
+    \item a \textit{header}, which permits the client to transfer extra information together with the request. In my application, I use it to pass the token for authorization.
+    \item a path to a resource. In a request, there shall be a path to the resource that the action should be carried out on.
+    \item a noncompulsory request body including data\cite{rest}
+\end{itemize}
 
 \section{Library and Framework}
 \subsection{Overview}
@@ -489,6 +521,11 @@ Spring Boot has many advantages, and the followings are the ones that made me pi
     \item It presents annotation-based Spring application.
     \item It helps dependency control.\cite{springboot}
 \end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{images/springboot.png}
+    \caption{An endpoint coded with Spring Boot}
+\end{figure}
 
 \subsection{jwt-decode}
 jwt-decode is a tiny browser library that assists in the decoding of JWTs tokens which are Base64Url encoded.\cite{jwtdecode} I used it in the front-end to decode the JWT received from the server after logging in.
@@ -559,7 +596,7 @@ Except for logging in, a request should always contain an Authorization header. 
 
 \subsection{Endpoints}
 \subsubsection{GET /api/showclass}
-This API is to show all classrooms that are available. All roles can access this endpoint.
+This API is to show all classrooms that are available. All roles can access this endpoint.\par
 \textbf{Response:}
 The response will be a JSON Array containing objects of classes. A class object, in this endpoint, will contain:
 \resource{
@@ -880,6 +917,21 @@ This API is for a student to check that if their call for attention is accepted 
    \attr{@Result}{boolean}{Is the call for attention accepted?}
 }
 \chapter{Conclusion}
+\section{Summary}
+The thesis introduces the progress of my project in an effort to develop a tool that can make interaction between lecturers and students better. To recap, the main features of the application are the class map, the quiz and the "attention call". \par
+
+In addition to that, this paper also summarizes my first experience in developing a whole web application from back-end to front-end. My supervisor, Mr. Clavel told me to limit the use of frameworks, since they force us to code in ways that are different to our coding style, and personally, I agree with him. For that reason, except for Spring Boot, which I am very familiar with, I did not use any other frameworks, although there are many famous frameworks for front-end development like React or Vue. This may made the coding process slower, but it truly helped me to control my application better, because I wrote every line of code myself, so I completely know how my app works. For me, I have attained good outcomes with the purpose of putting a tool that enhances classroom interaction. I pushed the source code on GitHub, and it is also deployed on Heroku. \par 
+
+\section{Future works}
+There are various functions that I firstly intended to add to my application, but due to the 2-month deadline, I did not have time to finish them. Those are:
+\begin{itemize}
+    \item Students can send to teachers anonymous assessments.
+    \item The students can follow the teacher's slide on their own screens. This is ideal for large classrooms, since looking at the projector is a bit hard in those classes.
+    \item An online whiteboard that can be zoomed in and out.
+\end{itemize}
+
+
+
 \printbibliography[title = References]
 \addcontentsline{toc}{chapter}{References}
 \end{document}
