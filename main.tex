@@ -40,12 +40,13 @@
 
 \usepackage{listings}
 \usepackage{color}
-
+\usepackage{usecases}
 \colorlet{punct}{red!60!black}
 \definecolor{background}{HTML}{EEEEEE}
 \definecolor{delim}{RGB}{20,105,176}
 \colorlet{numb}{magenta!60!black}
- 
+\usepackage{multirow}
+\usepackage{longtable}
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
@@ -250,7 +251,7 @@ Besides, nowadays, there are online courses in which the students can take part 
 For those reasons, I carried out my project, which is called the Web-Based Tool for Supporting Student-Lecturer Classroom Interaction. The app contains my solutions for the abovementioned problems, such as:
 \begin{itemize}
     \item A class map for the teacher to know where a particular student is sitting, and the basic information about that student. This class map can also be used to see the results of students on a particular quiz.
-    \item Teachers can create quizzes, and students can do quizzes directly on the app. While the students are doing the quiz, the teacher can have a live update of their results through the class map.
+    \item Teachers can create quizzes, and students can do quizzes directly on the app. While the students are doing the quiz, the teacher can have a live update of their results through the class map. After a quiz is done, the teacher can have the average result of his class doing the quiz, and the student can also review their solution for that quiz. 
     \item There is a function for a student to call for the teacher's attention just by clicking on one button. The teacher can close the call or accept it. If the teacher accept it, a video call window will be opened. The student's voice will then be heard through the teacher's speaker, and their image will be seen on the projector.
 \end{itemize}
 To make the thesis easy to follow, I divided the main content of it into two parts: one is the user manual, specifically written for end users so that anyone can use it without knowing about the tech behind; and one is the developer manual, which is designed for programming specialists to read, modify or develop the application. 
@@ -411,6 +412,160 @@ In the page of the Class, the student can click on the button “Call attention�
     \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{images/27.png}
 \end{figure}
 The student can also close the attention call with the button “Cancel attention”	
+\section{Use case descriptions for some main functions}
+\begin{usecase}
+
+\addtitle{Use Case 1}{A student takes a seat} 
+
+%Level: "user-goal" or "subfunction"
+\addfield{Level:}{User-goal}
+
+
+\additemizedfield{Actors}{
+	\item Student
+	\item Class page
+}
+
+\additemizedfield{Preconditions:}
+{
+    \item The Student is logged in.
+    \item The class is turned on by the Teacher
+    \item The Student is in the webpage of the Class
+} 
+
+\additemizedfield{Postconditions:}
+{
+    \item The Student occupied their desired seat
+    \item If the teacher reloads his Class page, he can see the student on the classmap.
+}
+
+%Main Success Scenario: A typical, unconditional happy path scenario of success.
+\addscenario{Main Success Scenario:}{
+	\item The Student picks a seat.
+	\item The page tells the Student that he picked the seat successfully.
+	\item The page reloads and turns the star representing the picked seat into a large green star.
+}
+
+\addscenario{Alternate scenario:}{
+	\item[2.a] A seat has been picked by another student
+		\begin{enumerate}
+		\item[1.] Page shows failure message
+		\item[2.] Student returns to step 1
+		\end{enumerate}
+}
+
+\end{usecase}
+\begin{usecase}
+
+\addtitle{Use Case 2}{Doing a quiz} 
+
+%Level: "user-goal" or "subfunction"
+\addfield{Level:}{User-goal}
+
+
+\additemizedfield{Actors}{
+    \item Teacher
+	\item Student  
+	\item Application
+}
+
+\additemizedfield{Preconditions:}
+{
+    \item Both the Student and the Teacher is logged in
+    \item A quiz is created by the Teacher
+    \item Both the Teacher and the Student is in the webpage of the Class
+} 
+
+\additemizedfield{Postconditions:}
+{
+    \item The quiz is completed. (which means the remaining time for the quiz reaches zero)
+    \item The answer of the student is saved. If he cannot answer, it will be saved also.
+    \item The Teacher can check for the result of the Student through the class map.
+    \item The Teacher can check for the average result of the Students on the quiz.
+    \item The Student can review his answer for the quiz.
+}
+
+%Main Success Scenario: A typical, unconditional happy path scenario of success.
+\addscenario{Main Success Scenario:}{
+	\item The teacher clicks on the "Show inactive questions"
+	\item The application shows all quizzes that the teacher has created, but has not activated.
+	\item The teacher clicks on the link of the quiz that he wants to activate.
+	\item The application shows the page of the quiz.
+	\item The teacher clicks "Activate quiz"
+	\item The application begins to count down.
+	\item The teacher returns to the Class page, and click on the button holding the name of the quiz to see the live update of the quiz through the class map.
+	\item The application automatically shows the link to the quiz on the screen of the Student.
+	\item The Student clicks on the link of the quiz.
+	\item The application shows the page of the quiz.
+	\item The student checks on the answer.
+	\item The student clicks "Submit answer"
+	\item The teacher sees the result of the student through the class map (the bottom frame will be colored green if the student answered right, and it will be red otherwise).
+	\item The quiz counts to zero, and end itself.
+}
+
+\addscenario{Alternate scenario:}{
+	\item[12.a] The student did not answer in time.
+		\begin{enumerate}
+		\item[1.] The application repleaces the button "Submit answer" with a "Time is over" line.
+		\item[2.] The teacher sees the result of the student through the class map, with the bottom frame colored black.
+		\end{enumerate}
+}
+
+\end{usecase}
+
+\begin{usecase}
+
+\addtitle{Use Case 3}{Attention call} 
+
+%Level: "user-goal" or "subfunction"
+\addfield{Level:}{User-goal}
+
+
+\additemizedfield{Actors}{
+    \item Teacher
+	\item Student  
+	\item Application
+}
+
+\additemizedfield{Preconditions:}
+{
+    \item Both the Student and the Teacher is logged in
+    \item Both the Teacher and the Student is in the webpage of the Class
+} 
+
+\additemizedfield{Postconditions:}
+{
+    \item The student and the teacher has a video call.
+}
+
+%Main Success Scenario: A typical, unconditional happy path scenario of success.
+\addscenario{Main Success Scenario:}{
+	\item The Student clicks the button "Call attention"
+	\item The application tells the Student that the call is successful.
+	\item The application colors the seat of that student red on the Teacher's screen, and beeps.
+	\item The teacher clicks "Accept attention call"
+	\item The application redirects both the teacher and the student to a video call page.
+}
+
+\addscenario{Alternate scenario:}{
+    \item[2.a] There is another call at the moment
+        \begin{enumerate}
+		\item[1.] The application tells the Student that there is another call right now.
+		\item[2.] Student returns to Step 1.
+		\end{enumerate}
+	\item[4.a] The teacher does not accept the call
+		\begin{enumerate}
+		\item[1.] The teacher clicks "Close attention call"
+		\item[2.] The application stops beeping, and returns the class map to normal.
+		\end{enumerate}
+	\item[4.b] The student wants to cancel the calll
+		\begin{enumerate}
+		\item[1.] The student clicks "Cancel attention"
+		\item[2.] The application stops beeping, and returns the class map to normal on the Teacher's screen.
+		\end{enumerate}
+}
+
+\end{usecase}
 
 \chapter{Developer manual}
 \section{Web app}
